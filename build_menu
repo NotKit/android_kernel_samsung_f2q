@@ -85,9 +85,9 @@ build(){
   make -j$(nproc) -C $(pwd) O=$(pwd)/out $KERNEL_MAKE_ENV ARCH=arm64 CROSS_COMPILE=$BUILD_CROSS_COMPILE REAL_CC=$KERNEL_LLVM_BIN CLANG_TRIPLE=$CLANG_TRIPLE CFP_CC=$KERNEL_LLVM_BIN vendor/afaneh_${VARIANT}_defconfig
   make -j$(nproc) -C $(pwd) O=$(pwd)/out $KERNEL_MAKE_ENV ARCH=arm64 CROSS_COMPILE=$BUILD_CROSS_COMPILE REAL_CC=$KERNEL_LLVM_BIN CLANG_TRIPLE=$CLANG_TRIPLE CFP_CC=$KERNEL_LLVM_BIN
 
-  [ -e out/arch/arm64/boot/Image ] && cp out/arch/arm64/boot/Image $(pwd)/out/Image
-  if [ -e out/arch/arm64/boot/Image-dtb ]; then
-    cp out/arch/arm64/boot/Image-dtb $(pwd)/out/Image-dtb
+  [ -e out/arch/arm64/boot/Image.gz ] && cp out/arch/arm64/boot/Image.gz $(pwd)/out/Image.gz
+  if [ -e out/arch/arm64/boot/Image.gz-dtb ]; then
+    cp out/arch/arm64/boot/Image.gz-dtb $(pwd)/out/Image.gz-dtb
 
     DTBO_FILES=$(find ${DTS_DIR}/samsung/ -name ${CHIPSET_NAME}-sec-f2q-*-r*.dtbo)
     cat ${DTS_DIR}/vendor/qcom/*.dtb > $(pwd)/out/dtb.img
@@ -105,11 +105,11 @@ anykernel3(){
     git clone https://github.com/osm0sis/AnyKernel3 $PARENT_DIR/AnyKernel3
   fi
   variant
-  [ -e $PARENT_DIR/f2q_kernel.zip ] && rm $PARENT_DIR/f2q_kernel.zip
-  if [ -e out/arch/arm64/boot/Image-dtb ]; then
-    cp out/arch/arm64/boot/Image-dtb $PARENT_DIR/AnyKernel3/zImage
-  elif [ -e out/arch/arm64/boot/Image ]; then
-    cp out/arch/arm64/boot/Image $PARENT_DIR/AnyKernel3/zImage
+  [ -e $PARENT_DIR/f2q_kernel_kernel.zip ] && rm $PARENT_DIR/f2q_kernel.zip
+  if [ -e out/arch/arm64/boot/Image.gz-dtb ]; then
+    cp out/arch/arm64/boot/Image.gz-dtb $PARENT_DIR/AnyKernel3/zImage
+  elif [ -e out/arch/arm64/boot/Image.gz ]; then
+    cp out/arch/arm64/boot/Image.gz $PARENT_DIR/AnyKernel3/zImage
   else
     pause 'return to Main menu' 'Build kernel first, '
   fi
